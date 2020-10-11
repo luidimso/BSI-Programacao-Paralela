@@ -1,3 +1,6 @@
+#Luidi Matheus
+#Tiago Corrêa
+
 from threading import Thread
 
 TEXTOS = ["Programacao Paralela", "Instituto Federal Fluminense"]
