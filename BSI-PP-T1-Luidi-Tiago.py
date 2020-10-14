@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #Luidi Matheus
 #Tiago Corrêa
 
