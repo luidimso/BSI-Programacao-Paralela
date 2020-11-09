@@ -23,6 +23,7 @@ class Trabalho3(Thread):
         self.loopQuantity = loopQuantity
 
     def run(self):
+        print("Thread da operacao {operation} iniciada.".format(operation = self.operation))
         for x in range(self.loopQuantity):
             if self.operation == "+":
                 self.sem.acquire()
