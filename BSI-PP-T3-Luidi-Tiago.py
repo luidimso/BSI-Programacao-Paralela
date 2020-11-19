@@ -6,82 +6,72 @@ import threading
 import time 
 import random
 import sys
-sem = threading.Semaphore() 
-
-lock = 0
+sem = threading.Semaphore()
 
 numeroA = 0
 numeroB = 0
 loopQuantity = 0
 
 #soma
-def fun1(a,b): 
+def fun1(a, b, quantidadeLoop): 
     global lock, loopQuantity
     t = 0
-    while loopQuantity > 0: 
-        if lock == 0:
-            sem.acquire() 
-            print("SOMA = {r}".format(r = a+b))
+    while quantidadeLoop > 0: 
+        sem.acquire() 
+        print("SOMA = {r}".format(r = a+b))
 
-            if t == 0:
-                t = random.randint(1,10)
-                print("Gerando tempo de descanco da thread de adicao....{tempo} segundos.".format(tempo = t))
+        if t == 0:
+            t = random.randint(1,10)
+            print("Gerando tempo de descanco da thread de adicao....{tempo} segundos.".format(tempo = t))
 
-            time.sleep(t) 
-            lock+=1
-            sem.release() 
+        time.sleep(t) 
+        quantidadeLoop-=1
+        sem.release() 
         
 #subtracao
-def fun2(a,b): 
+def fun2(a, b, quantidadeLoop): 
     global lock, loopQuantity
     t = 0
-    while loopQuantity > 0: 
-        if lock == 1:
-            sem.acquire()
-            print("SUBTRACAO = {r}".format(r = a-b))
-            if t == 0:
-                t = random.randint(1,10)
-                print("Gerando tempo de descanço da thread de subtracao....{tempo} segundos.".format(tempo = t))
+    while quantidadeLoop > 0: 
+        sem.acquire()
+        print("SUBTRACAO = {r}".format(r = a-b))
+        if t == 0:
+            t = random.randint(1,10)
+            print("Gerando tempo de descanço da thread de subtracao....{tempo} segundos.".format(tempo = t))
 
-            time.sleep(t)
-            lock+=1
-            sem.release()
+        time.sleep(t)
+        quantidadeLoop-=1
+        sem.release()
 #multiplicacao
-def fun3(a,b): 
+def fun3(a, b, quantidadeLoop): 
     global lock, loopQuantity
     t = 0
-    while loopQuantity > 0: 
-        if lock == 2:
-            sem.acquire()
-            print("MULTIPLICACAO = {r}".format(r = a*b))
+    while quantidadeLoop > 0: 
+        sem.acquire()
+        print("MULTIPLICACAO = {r}".format(r = a*b))
 
-            if t == 0:
-                t = random.randint(1,10)
-                print("Gerando tempo de descanço da thread de multiplicacao....{tempo} segundos.".format(tempo = t))
+        if t == 0:
+            t = random.randint(1,10)
+            print("Gerando tempo de descanço da thread de multiplicacao....{tempo} segundos.".format(tempo = t))
 
-            time.sleep(t)
-            lock+=1
-            sem.release()
+        time.sleep(t)
+        quantidadeLoop-=1
+        sem.release()
 #divisao
-def fun4(a,b): 
+def fun4(a, b, quantidadeLoop): 
     global lock, loopQuantity
     t = 0
-    while loopQuantity > 0: 
+    while quantidadeLoop > 0: 
+        sem.acquire()
+        print("DIVISAO = {r}".format(r = a/b))
 
-        if lock == 3:
-            loopQuantity -=1
-            sem.acquire()
-            print("DIVISAO = {r}".format(r = a/b))
+        if t == 0:
+            t = random.randint(1,10)
+            print("Gerando tempo de descanço da thread de divisão....{tempo} segundos.".format(tempo = t))
 
-            if t == 0:
-                t = random.randint(1,10)
-                print("Gerando tempo de descanço da thread de divisão....{tempo} segundos.".format(tempo = t))
-
-            time.sleep(t)
-            lock = 0
-            sem.release()
-            if loopQuantity == 0:
-                sys.exit(0)
+        time.sleep(t)
+        quantidadeLoop-=1
+        sem.release()
 
 
 while numeroA == 0:
@@ -97,11 +87,17 @@ while loopQuantity == 0:
     loopQuantity = int(input())
 
 print("----------------------------Iniciando threads....")
-t2 = threading.Thread(target = fun2, args=(numeroA, numeroB))
-t2.start()
-t1 = threading.Thread(target = fun1, args=(numeroA, numeroB))
+t1 = threading.Thread(target = fun1, args=(numeroA, numeroB, loopQuantity))
 t1.start()
-t4 = threading.Thread(target = fun4, args=(numeroA, numeroB))
-t4.start()
-t3 = threading.Thread(target = fun3, args=(numeroA, numeroB))
+
+t2 = threading.Thread(target = fun2, args=(numeroA, numeroB, loopQuantity))
+t2.start()
+t2.join()
+
+t3 = threading.Thread(target = fun3, args=(numeroA, numeroB, loopQuantity))
 t3.start()
+t3.join()
+
+t4 = threading.Thread(target = fun4, args=(numeroA, numeroB, loopQuantity))
+t4.start()
+t4.join()
