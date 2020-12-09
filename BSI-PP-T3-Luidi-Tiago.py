@@ -6,7 +6,7 @@ import threading
 import time 
 import random
 import sys
-sem = threading.Semaphore()
+sem = threading.BoundedSemaphore(value=4)
 
 numeroA = 0
 numeroB = 0
@@ -92,12 +92,14 @@ t1.start()
 
 t2 = threading.Thread(target = fun2, args=(numeroA, numeroB, loopQuantity))
 t2.start()
-t2.join()
 
 t3 = threading.Thread(target = fun3, args=(numeroA, numeroB, loopQuantity))
 t3.start()
-t3.join()
 
 t4 = threading.Thread(target = fun4, args=(numeroA, numeroB, loopQuantity))
 t4.start()
+
+t1.join()
+t2.join()
+t3.join()
 t4.join()
