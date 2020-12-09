@@ -13,11 +13,10 @@ vetorResultado = [2,
 
 def somatorio(index):
     count = 0
-    if index == 0:
-        count += matriz[index][0]
-    else:
-        for i in range(index, -1, -1):
-            count += matriz[i][0]*vetor[0]
+    if index != 0:
+        for i in range(index, 0, -1):
+            print(i, index)
+            count += matriz[index][i-1]*vetor[i-1]
         
     return count
     
